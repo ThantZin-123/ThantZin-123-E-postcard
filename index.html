@@ -83,28 +83,33 @@
         }
 
         .buttons {
+            min-height: 180px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             gap: 15px;
+            position: relative;
         }
 
         button {
             border: none;
-            padding: 15px 22px;
-            min-height: 52px;
+            padding: 10px 16px;
+            min-height: 42px;
             border-radius: 50px;
             background: white;
             color: #555;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+
             transition:
-                transform 0.4s ease,
+                transform 0.7s ease,
                 box-shadow 0.3s ease,
-                background 0.3s ease;
+                background 0.3s ease,
+                left 0.7s ease,
+                top 0.7s ease;
         }
 
         button:hover {
@@ -115,7 +120,8 @@
         .correct {
             background: #ff4f81;
             color: white;
-            z-index: 10;
+            z-index: 50;
+            position: relative;
         }
 
         .message {
@@ -131,8 +137,6 @@
             color: #999;
             font-size: 14px;
         }
-
-        /* Final screen */
 
         .success {
             display: none;
@@ -178,8 +182,6 @@
             border: 5px solid white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
         }
-
-        /* Floating hearts */
 
         .heart {
             position: fixed;
@@ -279,8 +281,9 @@
             }
 
             button {
-                font-size: 14px;
-                padding: 13px 17px;
+                font-size: 12px;
+                padding: 9px 13px;
+                min-height: 38px;
             }
 
             .success h2 {
@@ -348,8 +351,6 @@
             Wrong choices: 0
         </div>
 
-        <!-- FINAL SCREEN -->
-
         <div class="success" id="success">
 
             <div class="success-heart">
@@ -357,14 +358,6 @@
             </div>
 
             <h2>You Found It!</h2>
-
-            <!--
-                To use your own photo:
-
-                1. Put your photo in the GitHub repository.
-                2. Rename it to "my-photo.jpg"
-                3. Remove display:none below.
-            -->
 
             <img
                 id="myPhoto"
@@ -400,9 +393,6 @@
         const displayText =
             document.getElementById("displayText");
 
-        const subtitle =
-            document.getElementById("subtitle");
-
         const message =
             document.getElementById("message");
 
@@ -418,12 +408,6 @@
 
         let wrongCount = 0;
 
-
-        /*
-        ============================================
-        IMAGES / ANIMATIONS FOR EACH WRONG CLICK
-        ============================================
-        */
 
         const stages = [
 
@@ -447,30 +431,24 @@
 
             {
                 emoji: "💕",
-                text: "Okay... it's getting REALLY obvious.",
-                message: "Maybe press the big pink one? ❤️"
+                text: "အခုတော့ ပိုရှင်းလာပြီနော် ❤️",
+                message: "ပန်းရောင်ခလုတ်လေးကို နှိပ်ကြည့်ပါ..."
             },
 
             {
                 emoji: "💓",
-                text: "You really like pressing the wrong buttons 😂",
-                message: "The answer is right there!"
+                text: "ဒီလောက်ကြီးတာတောင် မမြင်သေးဘူးလား 😂",
+                message: "အဖြေက ဒီမှာပါ ❤️"
             },
 
             {
                 emoji: "💖",
-                text: "YOU CAN'T MISS IT NOW 😭",
-                message: "Please press me ❤️"
+                text: "မမြင်ချင်ယောင်ဆောင်နေတာလား 😭",
+                message: "ဒီခလုတ်လေးကို နှိပ်ပေးပါနော် ❤️"
             }
 
         ];
 
-
-        /*
-        ============================================
-        WRONG BUTTON
-        ============================================
-        */
 
         wrongButtons.forEach(function(button) {
 
@@ -484,38 +462,50 @@
 
 
                 /*
-                Make correct button bigger
+                =========================================
+                MOVE CORRECT BUTTON TOWARD CENTER
+                =========================================
                 */
 
                 const scale =
-                    1 + (wrongCount * 0.25);
+                    1 + (wrongCount * 0.22);
 
                 correctButton.style.transform =
-                    "scale(" + scale + ")";
+                    "translateY(" +
+                    (-wrongCount * 8) +
+                    "px) scale(" +
+                    scale +
+                    ")";
 
 
                 /*
-                Make it more noticeable
+                =========================================
+                MAKE BUTTON BIGGER
+                =========================================
                 */
 
                 correctButton.style.paddingLeft =
-                    (22 + wrongCount * 5) + "px";
+                    (16 + wrongCount * 7) + "px";
 
                 correctButton.style.paddingRight =
-                    (22 + wrongCount * 5) + "px";
+                    (16 + wrongCount * 7) + "px";
+
+
+                correctButton.style.paddingTop =
+                    (10 + wrongCount * 3) + "px";
+
+                correctButton.style.paddingBottom =
+                    (10 + wrongCount * 3) + "px";
 
 
                 /*
-                Change emoji
+                =========================================
+                CHANGE DISPLAY
+                =========================================
                 */
 
                 displayEmoji.textContent =
                     stages[wrongCount - 1].emoji;
-
-
-                /*
-                Change messages
-                */
 
                 displayText.textContent =
                     stages[wrongCount - 1].text;
@@ -529,7 +519,9 @@
 
 
                 /*
-                Pop animation
+                =========================================
+                POP ANIMATION
+                =========================================
                 */
 
                 displayEmoji.classList.remove("pop");
@@ -540,16 +532,14 @@
 
 
                 /*
-                Make the correct button glow
+                =========================================
+                GLOW
+                =========================================
                 */
 
                 correctButton.style.boxShadow =
-                    "0 0 30px rgba(255,79,129,0.8)";
+                    "0 0 35px rgba(255, 79, 129, 0.9)";
 
-
-                /*
-                Create floating hearts
-                */
 
                 createHeart();
 
@@ -566,34 +556,16 @@
 
         correctButton.addEventListener("click", function() {
 
-            /*
-            Disable buttons
-            */
-
             wrongButtons.forEach(function(button) {
                 button.disabled = true;
             });
 
             correctButton.disabled = true;
 
-
-            /*
-            Show final screen
-            */
-
             success.classList.add("show");
-
-
-            /*
-            Optional photo
-            */
 
             myPhoto.style.display = "block";
 
-
-            /*
-            Create lots of hearts
-            */
 
             for (let i = 0; i < 30; i++) {
 
@@ -608,7 +580,7 @@
 
         /*
         ============================================
-        FLOATING HEART FUNCTION
+        FLOATING HEART
         ============================================
         */
 
@@ -639,14 +611,11 @@
             heart.style.left =
                 Math.random() * 100 + "vw";
 
-
             heart.style.bottom =
                 "-30px";
 
-
             heart.style.fontSize =
                 (20 + Math.random() * 25) + "px";
-
 
             heart.style.animationDuration =
                 (3 + Math.random() * 3) + "s";
@@ -665,3 +634,4 @@
 
 </body>
 </html>
+
