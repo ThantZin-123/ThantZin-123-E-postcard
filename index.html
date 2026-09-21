@@ -1,0 +1,669 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>A Little Surprise ❤️</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #ffd6e7, #ffeef5, #ffd1dc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 30px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(160, 50, 90, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-heart {
+            font-size: 55px;
+            animation: floating 2s ease-in-out infinite;
+        }
+
+        h1 {
+            color: #d6336c;
+            font-size: 32px;
+            margin: 10px 0;
+        }
+
+        .subtitle {
+            color: #777;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .display {
+            height: 220px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #fff0f6, #ffe0eb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .display-emoji {
+            font-size: 100px;
+            transition: all 0.5s ease;
+        }
+
+        .display-text {
+            position: absolute;
+            bottom: 18px;
+            left: 0;
+            right: 0;
+            color: #c2255c;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            padding: 15px 22px;
+            min-height: 52px;
+            border-radius: 50px;
+            background: white;
+            color: #555;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+        }
+
+        .correct {
+            background: #ff4f81;
+            color: white;
+            z-index: 10;
+        }
+
+        .message {
+            margin-top: 25px;
+            min-height: 30px;
+            color: #c2255c;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .counter {
+            margin-top: 10px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Final screen */
+
+        .success {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #ff5c8a, #ff9fba);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+            padding: 30px;
+        }
+
+        .success.show {
+            display: flex;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .success-heart {
+            font-size: 110px;
+            animation: heartbeat 1s infinite;
+        }
+
+        .success h2 {
+            font-size: 38px;
+            margin: 15px 0;
+        }
+
+        .success p {
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .photo {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 25px;
+            margin: 20px 0;
+            display: none;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        /* Floating hearts */
+
+        .heart {
+            position: fixed;
+            pointer-events: none;
+            animation: rise 4s linear forwards;
+            font-size: 25px;
+            z-index: 200;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.2);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .pop {
+            animation: pop 0.5s ease;
+        }
+
+        @media (max-width: 500px) {
+
+            .card {
+                padding: 25px 15px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .display {
+                height: 180px;
+            }
+
+            .display-emoji {
+                font-size: 75px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 13px 17px;
+            }
+
+            .success h2 {
+                font-size: 30px;
+            }
+
+            .success p {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="top-heart">💗</div>
+
+        <h1>There is something for you...</h1>
+
+        <p class="subtitle" id="subtitle">
+            One of these buttons is special.
+            Can you find it? 👀
+        </p>
+
+        <div class="display">
+
+            <div class="display-emoji" id="displayEmoji">
+                🌷
+            </div>
+
+            <div class="display-text" id="displayText">
+                Choose carefully...
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="wrong">
+                🌸 Flower
+            </button>
+
+            <button class="wrong">
+                🎁 Gift
+            </button>
+
+            <button class="correct" id="correctButton">
+                💖 Press Me
+            </button>
+
+            <button class="wrong">
+                🌙 Moon
+            </button>
+
+            <button class="wrong">
+                🦋 Butterfly
+            </button>
+
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="counter" id="counter">
+            Wrong choices: 0
+        </div>
+
+        <!-- FINAL SCREEN -->
+
+        <div class="success" id="success">
+
+            <div class="success-heart">
+                💖
+            </div>
+
+            <h2>You Found It!</h2>
+
+            <!--
+                To use your own photo:
+
+                1. Put your photo in the GitHub repository.
+                2. Rename it to "my-photo.jpg"
+                3. Remove display:none below.
+            -->
+
+            <img
+                id="myPhoto"
+                class="photo"
+                src="my-photo.jpg"
+                alt="A special photo"
+            >
+
+            <p>
+                I knew you would find the right one. ❤️
+                <br><br>
+                Maybe the real surprise...
+                <br>
+                is that you're the person I wanted to press it. 💕
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const correctButton =
+            document.getElementById("correctButton");
+
+        const wrongButtons =
+            document.querySelectorAll(".wrong");
+
+        const displayEmoji =
+            document.getElementById("displayEmoji");
+
+        const displayText =
+            document.getElementById("displayText");
+
+        const subtitle =
+            document.getElementById("subtitle");
+
+        const message =
+            document.getElementById("message");
+
+        const counter =
+            document.getElementById("counter");
+
+        const success =
+            document.getElementById("success");
+
+        const myPhoto =
+            document.getElementById("myPhoto");
+
+
+        let wrongCount = 0;
+
+
+        /*
+        ============================================
+        IMAGES / ANIMATIONS FOR EACH WRONG CLICK
+        ============================================
+        */
+
+        const stages = [
+
+            {
+                emoji: "🌷",
+                text: "Hmm... not that one 😏",
+                message: "Try again..."
+            },
+
+            {
+                emoji: "🌹",
+                text: "You touched the wrong one 👀",
+                message: "Look at the pink button..."
+            },
+
+            {
+                emoji: "💐",
+                text: "The special button is getting bigger!",
+                message: "Are you noticing something? 😂"
+            },
+
+            {
+                emoji: "💕",
+                text: "Okay... it's getting REALLY obvious.",
+                message: "Maybe press the big pink one? ❤️"
+            },
+
+            {
+                emoji: "💓",
+                text: "You really like pressing the wrong buttons 😂",
+                message: "The answer is right there!"
+            },
+
+            {
+                emoji: "💖",
+                text: "YOU CAN'T MISS IT NOW 😭",
+                message: "Please press me ❤️"
+            }
+
+        ];
+
+
+        /*
+        ============================================
+        WRONG BUTTON
+        ============================================
+        */
+
+        wrongButtons.forEach(function(button) {
+
+            button.addEventListener("click", function() {
+
+                wrongCount++;
+
+                if (wrongCount > stages.length) {
+                    wrongCount = stages.length;
+                }
+
+
+                /*
+                Make correct button bigger
+                */
+
+                const scale =
+                    1 + (wrongCount * 0.25);
+
+                correctButton.style.transform =
+                    "scale(" + scale + ")";
+
+
+                /*
+                Make it more noticeable
+                */
+
+                correctButton.style.paddingLeft =
+                    (22 + wrongCount * 5) + "px";
+
+                correctButton.style.paddingRight =
+                    (22 + wrongCount * 5) + "px";
+
+
+                /*
+                Change emoji
+                */
+
+                displayEmoji.textContent =
+                    stages[wrongCount - 1].emoji;
+
+
+                /*
+                Change messages
+                */
+
+                displayText.textContent =
+                    stages[wrongCount - 1].text;
+
+                message.textContent =
+                    stages[wrongCount - 1].message;
+
+
+                counter.textContent =
+                    "Wrong choices: " + wrongCount;
+
+
+                /*
+                Pop animation
+                */
+
+                displayEmoji.classList.remove("pop");
+
+                void displayEmoji.offsetWidth;
+
+                displayEmoji.classList.add("pop");
+
+
+                /*
+                Make the correct button glow
+                */
+
+                correctButton.style.boxShadow =
+                    "0 0 30px rgba(255,79,129,0.8)";
+
+
+                /*
+                Create floating hearts
+                */
+
+                createHeart();
+
+            });
+
+        });
+
+
+        /*
+        ============================================
+        CORRECT BUTTON
+        ============================================
+        */
+
+        correctButton.addEventListener("click", function() {
+
+            /*
+            Disable buttons
+            */
+
+            wrongButtons.forEach(function(button) {
+                button.disabled = true;
+            });
+
+            correctButton.disabled = true;
+
+
+            /*
+            Show final screen
+            */
+
+            success.classList.add("show");
+
+
+            /*
+            Optional photo
+            */
+
+            myPhoto.style.display = "block";
+
+
+            /*
+            Create lots of hearts
+            */
+
+            for (let i = 0; i < 30; i++) {
+
+                setTimeout(function() {
+                    createHeart();
+                }, i * 100);
+
+            }
+
+        });
+
+
+        /*
+        ============================================
+        FLOATING HEART FUNCTION
+        ============================================
+        */
+
+        function createHeart() {
+
+            const heart =
+                document.createElement("div");
+
+            heart.className = "heart";
+
+            const hearts = [
+                "❤️",
+                "💕",
+                "💖",
+                "💗",
+                "💓",
+                "💘"
+            ];
+
+            heart.textContent =
+                hearts[
+                    Math.floor(
+                        Math.random() * hearts.length
+                    )
+                ];
+
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+
+            heart.style.bottom =
+                "-30px";
+
+
+            heart.style.fontSize =
+                (20 + Math.random() * 25) + "px";
+
+
+            heart.style.animationDuration =
+                (3 + Math.random() * 3) + "s";
+
+
+            document.body.appendChild(heart);
+
+
+            setTimeout(function() {
+                heart.remove();
+            }, 6000);
+
+        }
+
+    </script>
+
+</body>
+</html>
+```
